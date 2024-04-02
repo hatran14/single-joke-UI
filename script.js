@@ -10,16 +10,17 @@ const getRandomJoke = async () => {
         "Content-Type": "application/json",
       },
     })
-    console.log("🚀 ~ getRandomJoke ~ response:", response)
-
 		const data = await response.json()
 		// Check if there are no more jokes to show
-		if (!data) {
+		if (!data.metadata) {
 			alert("That's all the jokes for today! Come back another day!")
+      document.getElementById("joke-content").innerText = "No more jokes to show"
+      document.getElementById("like-btn").style.display = "none"
+      document.getElementById("dislike-btn").style.display = "none"
 			return
 		}
-		currentJokeId = data._id
-		document.getElementById("joke-content").innerText = data.text
+		currentJokeId = data.metadata._id
+		document.getElementById("joke-content").innerText = data.metadata.text
 	} catch (error) {
 		console.log(error)
 	}
