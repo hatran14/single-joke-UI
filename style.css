@@ -47,6 +47,11 @@
   opacity: 0.8;
 }
 
+.btn:active {
+  background-color: darkgreen;
+  opacity: 1;
+}
+
 #banner {
   color: white;
   background-color: mediumseagreen;
