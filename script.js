@@ -4,7 +4,6 @@ const getRandomJoke = async () => {
 	try {
 		disableJokeDisplay("Loading...")
 		const votedJokes = JSON.stringify(getArrayOfVotedJokes())
-		console.log("🚀 ~ getRandomJoke ~ votedJokes:", votedJokes)
 		const response = await fetch(
 			`https://single-joke-be.vercel.app/api/v1/jokes/random?votedJokes=${votedJokes}`,
 			{
@@ -15,7 +14,6 @@ const getRandomJoke = async () => {
 			}
 		)
 		const data = await response.json()
-		console.log("🚀 ~ getRandomJoke ~ data:", data)
 		// Check if there are no more jokes to show
 		if (Object.keys(data.metadata).length === 0) {
 			disableJokeDisplay("There are no more jokes to show!")
