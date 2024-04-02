@@ -4,7 +4,7 @@ const getRandomJoke = async () => {
 	try {
     const votedJokes = JSON.stringify(getArrayOfVotedJokes())
     console.log("🚀 ~ getRandomJoke ~ votedJokes:", votedJokes)
-		const response = await fetch(`http://localhost:3000/api/v1/jokes/random?votedJokes=${votedJokes}`, {
+		const response = await fetch(`https://single-joke-be.vercel.app/api/v1/jokes/random?votedJokes=${votedJokes}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
