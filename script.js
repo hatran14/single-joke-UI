@@ -13,10 +13,10 @@ const getRandomJoke = async () => {
 		const data = await response.json()
 		// Check if there are no more jokes to show
 		if (!data.metadata) {
-			alert("That's all the jokes for today! Come back another day!")
       document.getElementById("joke-content").innerText = "No more jokes to show"
       document.getElementById("like-btn").style.display = "none"
       document.getElementById("dislike-btn").style.display = "none"
+			alert("That's all the jokes for today! Come back another day!")
 			return
 		}
 		currentJokeId = data.metadata._id
