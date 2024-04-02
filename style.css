@@ -52,6 +52,24 @@
   opacity: 1;
 }
 
+#like-btn {
+  background-color: cornflowerblue
+}
+
+#like-btn[disabled] {
+  background-color: #dddddd; /* Màu nền xám nhạt */
+  color: #999999; /* Màu chữ xám nhạt */
+  cursor: not-allowed; /* Không cho phép cursor pointer */}
+
+#dislike-btn {
+  background-color: mediumseagreen
+}
+
+#dislike-btn[disabled] {
+  background-color: #dddddd; /* Màu nền xám nhạt */
+  color: #999999; /* Màu chữ xám nhạt */
+  cursor: not-allowed; /* Không cho phép cursor pointer */}
+
 #banner {
   color: white;
   background-color: mediumseagreen;

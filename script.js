@@ -2,25 +2,31 @@ let currentJokeId = null
 
 const getRandomJoke = async () => {
 	try {
-    const votedJokes = JSON.stringify(getArrayOfVotedJokes())
-    console.log("🚀 ~ getRandomJoke ~ votedJokes:", votedJokes)
-		const response = await fetch(`https://single-joke-be.vercel.app/api/v1/jokes/random?votedJokes=${votedJokes}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+		disableJokeDisplay("Loading...")
+		const votedJokes = JSON.stringify(getArrayOfVotedJokes())
+		console.log("🚀 ~ getRandomJoke ~ votedJokes:", votedJokes)
+		const response = await fetch(
+			`https://single-joke-be.vercel.app/api/v1/jokes/random?votedJokes=${votedJokes}`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		)
 		const data = await response.json()
+		console.log("🚀 ~ getRandomJoke ~ data:", data)
 		// Check if there are no more jokes to show
-		if (!data.metadata) {
-      document.getElementById("joke-content").innerText = "No more jokes to show"
-      document.getElementById("like-btn").style.display = "none"
-      document.getElementById("dislike-btn").style.display = "none"
+		if (Object.keys(data.metadata).length === 0) {
+			disableJokeDisplay("There are no more jokes to show!")
 			alert("That's all the jokes for today! Come back another day!")
 			return
+		} else {
+			currentJokeId = data.metadata._id
+			document.getElementById("joke-content").innerText = data.metadata.text
+			document.getElementById("like-btn").disabled = false
+			document.getElementById("dislike-btn").disabled = false
 		}
-		currentJokeId = data.metadata._id
-		document.getElementById("joke-content").innerText = data.metadata.text
 	} catch (error) {
 		console.log(error)
 	}
@@ -57,12 +63,18 @@ const setCookie = (name, value) => {
 }
 
 const getArrayOfVotedJokes = () => {
-  const cookies = document.cookie.split(";")
-  const votedJokes = cookies
-    .filter((cookie) => cookie.includes("voted-joke-"))
-    .map((cookie) => cookie.split("=")[1])
-  console.log(votedJokes)
-  return votedJokes
+	const cookies = document.cookie.split(";")
+	const votedJokes = cookies
+		.filter((cookie) => cookie.includes("voted-joke-"))
+		.map((cookie) => cookie.split("=")[1])
+	console.log(votedJokes)
+	return votedJokes
+}
+
+const disableJokeDisplay = (jokeContent) => {
+	document.getElementById("joke-content").innerText = jokeContent
+	document.getElementById("like-btn").disabled = true
+	document.getElementById("dislike-btn").disabled = true
 }
 
 document.getElementById("dislike-btn").addEventListener("click", () => {
@@ -72,7 +84,7 @@ document.getElementById("dislike-btn").addEventListener("click", () => {
 	getRandomJoke()
 })
 
-document.getElementById("like-btn").addEventListener("click", () => {
+document.getElementById("like-btn").addEventListener("click", async () => {
 	likeJoke(currentJokeId)
 	setCookie(`voted-joke-${currentJokeId}`, currentJokeId)
 	alert("You have liked this joke")
